@@ -23,13 +23,9 @@ export default function MovieForm() {
   const [errors, setErrors] = useState({ title: "", publishingYear: "", video: "" });
 
 
-  const getMovie = (id) => {
-    dispatch(fetchMovieById(id));
-  };
-  
   useEffect(() => {
     if (id) {
-      getMovie(id);
+      dispatch(fetchMovieById(id));;
     }
   }, [id, dispatch]);
 

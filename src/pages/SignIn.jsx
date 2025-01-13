@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/userSlice";
-import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { TailSpin } from "react-loader-spinner";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignIn() {
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -17,23 +16,7 @@ export default function SignIn() {
 
 
   const { error, isLoading } = useSelector((state) => state.user)
-  const [rememberMe, setRememberMe] = useState(false); 
-
-  // Load stored data if "Remember Me" was checked
-  useEffect(() => {
-    const storedEmail = localStorage.getItem("email");
-    const storedPassword = localStorage.getItem("password");
-
-    if (storedEmail) {
-      setEmail(storedEmail);
-      setPassword(storedPassword);
-      setRememberMe(true);
-    }
-    const token = localStorage.getItem("token")
-    if (token) {
-      navigate("/movies")
-    }
-  }, []);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // Validate form
   const validateForm = () => {
@@ -48,14 +31,14 @@ export default function SignIn() {
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Please enter a valid email address";
-      newBorderColor.email = "border-red-500"; 
+      newBorderColor.email = "border-red-500";
       isValid = false;
     }
 
     // Validate password
     if (!password.trim()) {
       newErrors.password = "Password is required";
-      newBorderColor.password = "border-red-500"; 
+      newBorderColor.password = "border-red-500";
       isValid = false;
     }
 
@@ -86,11 +69,11 @@ export default function SignIn() {
     if (error) {
       toast.error(error, {
         position: "top-right",
-        autoClose: 3000, 
-        hideProgressBar: true, 
-        closeOnClick: true, 
-        pauseOnHover: true, 
-        draggable: true, 
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
         progress: undefined,
       });
     }
