@@ -13,7 +13,6 @@ export default function MovieList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { movies, meta, isLoading } = useSelector((state) => state.movies);
-  const [showOptions, setShowOptions] = useState(null);
   const [playingMovieId, setPlayingMovieId] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentPage, setCurrentPage] = useState(meta.current_page || 1);
@@ -44,7 +43,6 @@ export default function MovieList() {
   // Function to delete a movie
   const handleDelete = (id) => {
     dispatch(deleteMovie(id));
-    handleCloseOptions();
   };
 
 
@@ -105,7 +103,6 @@ export default function MovieList() {
                   )
                   }
                 </div>
-
                 {/* Movie Info */}
                 <div className="p-2">
                   <h3 className="text-sm font-semibold text-white truncate">{movie.title}</h3>

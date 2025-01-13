@@ -68,13 +68,12 @@ const movieSlice = createSlice({
         state.error = action.error.message;
         state.isLoading = false
       })
-      .addCase(addMovie.pending, (state, action) => {
+      .addCase(addMovie.pending, (state) => {
         state.isLoading = true
         state.status = 'loading';
       })
-      .addCase(addMovie.fulfilled, (state, action) => {
+      .addCase(addMovie.fulfilled, (state) => {
         state.status = 'succeeded';
-        state.movies.unshift(action.payload.movie);
         state.isLoading = false
         window.location.href = "/movies"
       })
@@ -83,11 +82,19 @@ const movieSlice = createSlice({
         state.error = action.error.message;
         state.isLoading = false
       })
-      .addCase(updateMovie.fulfilled, (state, action) => {
-        const index = state.movies.findIndex((movie) => movie.id === action.payload.id);
-        if (index >= 0) {
-          state.movies[index] = action.payload;
-        }
+      .addCase(updateMovie.pending, (state) => {
+        state.isLoading = true
+        state.status = 'loading';
+      })
+      .addCase(updateMovie.fulfilled, (state) => {
+        state.status = 'succeeded';
+        state.isLoading = false
+        window.location.href = "/movies"
+      })
+      .addCase(updateMovie.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+        state.isLoading = false
       })
       .addCase(fetchMovieById.pending, (state) => {
         state.status = 'loading';

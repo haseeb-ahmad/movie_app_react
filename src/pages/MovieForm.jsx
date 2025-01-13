@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieById, updateMovie, addMovie } from "../store/movieSlice.js";
-import Header from "../components/Header";
-import Footer from "../components/Footer.jsx";
 import { LuDownload } from "react-icons/lu";
 import { TailSpin } from "react-loader-spinner";
 import { FaTimes } from 'react-icons/fa';
+import Header from "../components/Header";
+import Footer from "../components/Footer.jsx";
 
 export default function MovieForm() {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { status, error, isLoading, movie } = useSelector((state) => state.movies);
+  const { isLoading, movie } = useSelector((state) => state.movies);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -21,11 +21,12 @@ export default function MovieForm() {
   });
   const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({ title: "", publishingYear: "", video: "" });
-  const [alert, setAlert] = useState(null);
+
 
   const getMovie = (id) => {
     dispatch(fetchMovieById(id));
   };
+  
   useEffect(() => {
     if (id) {
       getMovie(id);
@@ -42,6 +43,11 @@ export default function MovieForm() {
       setPreview(movie.video_url || null); // If the movie has a preview URL.
     }
   }, [movie, isLoading]);
+
+  useEffect(() => {
+    setPreview(null); // Reset preview when ID changes
+  }, [id]);
+
 
   const handleVideoUpload = (e) => {
     const file = e.target.files[0];
@@ -120,46 +126,33 @@ export default function MovieForm() {
       console.log("form validated");
     } else {
       console.log("form not valid");
-      return; 
+      return;
     }
     if (!validateForm()) {
       return;
     }
+    const movieData = new FormData();
+    movieData.append("movie[title]", formData.title);
+    movieData.append("movie[publishing_year]", formData.publishingYear);
 
-    try {
-      const movieData = new FormData();
-      movieData.append("movie[title]", formData.title);
-      movieData.append("movie[publishing_year]", formData.publishingYear);
-
-      if (formData.video) {
-        movieData.append("movie[video]", formData.video);
-      }
-
-      if (id) {
-        dispatch(updateMovie({ id, movie: movieData }));
-        setAlert({ type: "success", message: "Movie updated successfully!" });
-      } else {
-        dispatch(addMovie(movieData));
-        setAlert({ type: "success", message: "Movie created successfully!" });
-      }
-      navigate("/movies");
-      setAlert(null);
-    } catch (error) {
-      setAlert({ type: "error", message: "Error submitting form." });
-    } finally {
+    if (formData.video) {
+      movieData.append("movie[video]", formData.video);
+    }
+    if (id) {
+      dispatch(updateMovie({ id, movie: movieData }));
+    } else {
+      dispatch(addMovie(movieData));
     }
   };
 
   return (
     <div className="flex flex-col h-screen bg-[#093545]">
       <Header />
-
       {isLoading && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <TailSpin height={80} width={80} color="#2BD17E" />
         </div>
       )}
-
       <div className="flex flex-col mt-8 px-6 sm:px-12 md:px-20 lg:px-32">
         <h1 className="text-2xl font-bold mb-4 text-white">
           {id ? "Edit Movie" : "Create a New Movie"}

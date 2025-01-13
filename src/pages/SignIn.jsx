@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ export default function SignIn() {
 
 
   const { error, isLoading } = useSelector((state) => state.user)
-  const [rememberMe, setRememberMe] = useState(false); // Remember Me state
+  const [rememberMe, setRememberMe] = useState(false); 
 
   // Load stored data if "Remember Me" was checked
   useEffect(() => {
@@ -48,14 +48,14 @@ export default function SignIn() {
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Please enter a valid email address";
-      newBorderColor.email = "border-red-500"; // Red border on error
+      newBorderColor.email = "border-red-500"; 
       isValid = false;
     }
 
     // Validate password
     if (!password.trim()) {
       newErrors.password = "Password is required";
-      newBorderColor.password = "border-red-500"; // Red border on error
+      newBorderColor.password = "border-red-500"; 
       isValid = false;
     }
 
@@ -64,7 +64,6 @@ export default function SignIn() {
     return isValid;
   };
 
-  //^ Handle form submission (Login)
   const handleLogin = () => {
     if (!validateForm()) {
       return; // Stop if validation fails
@@ -86,12 +85,12 @@ export default function SignIn() {
   useEffect(() => {
     if (error) {
       toast.error(error, {
-        position: "top-right", // Position of the toaster
-        autoClose: 3000, // Time in milliseconds before the toast disappears
-        hideProgressBar: true, // Hide the progress bar
-        closeOnClick: true, // Allow closing on click
-        pauseOnHover: true, // Pause on hover
-        draggable: true, // Allow dragging the toast
+        position: "top-right",
+        autoClose: 3000, 
+        hideProgressBar: true, 
+        closeOnClick: true, 
+        pauseOnHover: true, 
+        draggable: true, 
         progress: undefined,
       });
     }
