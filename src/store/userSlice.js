@@ -4,38 +4,30 @@ import axiosInstance from '../api/axiosInterceptors';
 export const loginUser = createAsyncThunk('user/loginUser', async (data) => {
   try {
     const response = await axiosInstance.post(`/users/sign_in`, data);
-   
-    return response.data; // This could return user data and token
+    return response.data; 
   } catch (error) {
     throw new Error(error.response ? error.response.data.error : 'Login failed');
   }
 });
 
-// Updated logoutUser action with server-side logout (axios.delete)
 export const logoutUser = createAsyncThunk('user/logoutUserAsync', async () => {
   try {
-    // Optionally, make a request to the server to invalidate the session or token
-  
-      await axiosInstance.delete(`/users/sign_out`);
-
-    // Clear local storage after logging out from the server
+    await axiosInstance.delete(`/users/sign_out`);
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     localStorage.removeItem('password');
     window.location.href = "/"
-    return; // Return null or some value if needed
+    return;
   } catch (error) {
     console.error('Error during logout:', error);
   }
 });
 
-
-// User Slice
 const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: null,
-    status: 'idle', // 'loading' | 'succeeded' | 'failed'
+    status: 'idle', 
     error: null,
     isLoading: false,
   },
@@ -50,7 +42,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.user = action.payload.user;
-        localStorage.setItem('token', action.payload.token); // Save token in localStorage
+        localStorage.setItem('token', action.payload.token); 
         state.isLoading = false
         window.location.href = "/movies"
       })
@@ -61,7 +53,7 @@ const userSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
-        state.status = 'idle'; // Reset status to idle after logout
+        state.status = 'idle'; 
       });
   },
 });

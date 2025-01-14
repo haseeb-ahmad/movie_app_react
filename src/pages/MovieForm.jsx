@@ -34,14 +34,14 @@ export default function MovieForm() {
       setFormData({
         title: movie.title || "",
         publishingYear: movie.publishing_year || "",
-        video: null, // You might want to fetch the video file if needed.
+        video: null, 
       });
-      setPreview(movie.video_url || null); // If the movie has a preview URL.
+      setPreview(movie.video_url || null); 
     }
   }, [movie, isLoading]);
 
   useEffect(() => {
-    setPreview(null); // Reset preview when ID changes
+    setPreview(null); 
   }, [id]);
 
 
@@ -57,12 +57,10 @@ export default function MovieForm() {
     setPreview(videoURL);
   };
 
-  // validate seprately
   const handleTitleChange = (e) => {
     const value = e.target.value;
     setFormData((prevData) => ({ ...prevData, title: value }));
 
-    // Validate title on change
     const newErrors = { ...errors, title: "" };
     if (!value.trim()) {
       newErrors.title = "Title is required";
@@ -74,7 +72,6 @@ export default function MovieForm() {
     const value = e.target.value;
     setFormData((prevData) => ({ ...prevData, publishingYear: value }));
 
-    // Validate publishing year on change
     const newErrors = { ...errors, publishingYear: "" };
     const year = parseInt(value, 10);
     if (
@@ -87,8 +84,7 @@ export default function MovieForm() {
     }
     setErrors(newErrors);
   };
-
-  // validate form completely 
+  
   const validateForm = () => {
     const newErrors = { title: "", publishingYear: "", video: "" };
     let isValid = true;
@@ -118,12 +114,7 @@ export default function MovieForm() {
   };
 
   const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("form validated");
-    } else {
-      console.log("form not valid");
-      return;
-    }
+
     if (!validateForm()) {
       return;
     }

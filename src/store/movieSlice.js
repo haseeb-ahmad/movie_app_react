@@ -3,7 +3,7 @@ import axiosInstance from "../api/axiosInterceptors"
 
 export const fetchMovies = createAsyncThunk('movies/fetchMovies', async ({currentPage, itemsPerPage}) => {
   const response = await axiosInstance.get(`api/v1/movies?page=${currentPage}&per_page=${itemsPerPage}`);
-  return response.data; // Return the data to be stored in the Redux state
+  return response.data; 
 });
 
 export const addMovie = createAsyncThunk('movies/addMovie', async (movieData) => {
@@ -26,15 +26,14 @@ export const updateMovie = createAsyncThunk('movies/updateMovie', async ({ movie
 
 export const fetchMovieById = createAsyncThunk('movies/fetchMovieById', async (id) => {
   const response = await axiosInstance.get(`api/v1/movies/${id}`);
-  return response.data; // Return the data to be stored in the Redux state
+  return response.data; 
 });
 
 export const deleteMovie = createAsyncThunk('movies/deleteMovie', async (movieId) => {
   await axiosInstance.delete(`api/v1/movies/${movieId}`);
-  return movieId; // Return the movie ID to delete it from the state
+  return movieId; 
 });
 
-// Movie Slice
 const movieSlice = createSlice({
   name: 'movies',
   initialState: {
@@ -102,7 +101,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchMovieById.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.movie = action.payload.movie; // Store fetched movie
+        state.movie = action.payload.movie; 
         state.isLoading = false
       })
       .addCase(fetchMovieById.rejected, (state, action) => {

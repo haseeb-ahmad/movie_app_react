@@ -18,40 +18,30 @@ export default function MovieList() {
   const [currentPage, setCurrentPage] = useState(meta.current_page || 1);
   const itemsPerPage = meta.per_page || 8;
 
-
-  // Fetch movies from the backend API
   useEffect(() => {
     dispatch(fetchMovies({ currentPage, itemsPerPage }));
-
   }, [dispatch, currentPage, itemsPerPage]);
 
-  // Handle pagination page change
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1);
   };
 
-  // Open dropdown menu
   const handleOpenOptions = (event, movieId) => {
     setAnchorEl({ target: event.currentTarget, id: movieId });
   };
 
-  // Close dropdown menu
   const handleCloseOptions = () => {
     setAnchorEl(null);
   };
 
-  // Function to delete a movie
   const handleDelete = (id) => {
     dispatch(deleteMovie(id));
   };
 
-
-  // Play video
   const handlePlay = (movieId) => {
     setPlayingMovieId(movieId);
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (anchorEl && !anchorEl.target.contains(event.target)) {
@@ -73,15 +63,12 @@ export default function MovieList() {
       ) : (
         <div className="flex-grow flex flex-col">
           <Header />
-
-          {/* Movie Grid with Responsive Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 px-4 sm:px-6 lg:px-8">
             {movies.map((movie) => (
               <div
                 key={movie.id}
                 className="bg-[#093545] hover:bg-[#092C39] shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 relative h-52"
               >
-                {/* Thumbnail or Video */}
                 <div onClick={() => handlePlay(movie.id)} className="cursor-pointer">
                   {playingMovieId === movie.id ? (
                     <video
@@ -103,14 +90,11 @@ export default function MovieList() {
                   )
                   }
                 </div>
-                {/* Movie Info */}
                 <div className="p-2">
                   <h3 className="text-sm font-semibold text-white truncate">{movie.title}</h3>
                   <p className="text-xs text-white mt-1">Status: {movie.status}</p>
                   <p className="text-xs text-white mt-1">{movie.publishing_year}</p>
                 </div>
-
-                {/* Options */}
                 <button
                   onClick={(event) => handleOpenOptions(event, movie.id)}
                   className="absolute top-2 right-2 text-white p-1"
@@ -138,7 +122,6 @@ export default function MovieList() {
               </div>
             ))}
           </div>
-          {/* Pagination positioned at the bottom, independent of content length */}
           <div className="fixed bottom-14 left-0 right-0 flex justify-center z-20 px-4 sm:px-6 lg:px-8 mt-0">
             <ReactPaginate
               previousLabel={"← Previous"}

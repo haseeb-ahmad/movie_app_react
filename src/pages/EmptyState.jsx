@@ -7,12 +7,9 @@ export default function EmptyState() {
   return (
     <div className="relative flex flex-col items-center justify-between min-h-screen bg-[#093545]">
       <div className="flex-grow flex flex-col items-center justify-center">
-        {/* Empty State Text */}
         <h2 className="text-4xl font-bold mb-6 text-white text-center">
           Your movie list is empty
         </h2>
-
-        {/* Add Movie Button */}
         <button
           onClick={() => navigate("/movie/new")}
           className="bg-[#2BD17E] text-white px-6 py-3 rounded"
@@ -20,8 +17,6 @@ export default function EmptyState() {
           Add a new movie
         </button>
       </div>
-      
-      {/* Footer */}
       <Footer />
     </div>
   );
